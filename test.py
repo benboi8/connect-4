@@ -79,13 +79,13 @@ def VerticalCheck():
 	wins = 0
 
 	# repeat the whole program
-	for i in range(1):
+	for i in range(10):
 		# how many positions are in each row (rect.w / size[0])
 		rowLength = 10
 		# get a random list of 1 and 0 to represent placed player list
 		rowHeight = 50
 		allPos = [random.randint(0, 1) for i in range(rowHeight)]
-		# random.shuffle(allPos)
+		random.shuffle(allPos)
 		yPos = [[] for i in range(len(allPos)//rowLength)]
 		row = 0
 		for i, y in enumerate(allPos):
@@ -106,69 +106,65 @@ def VerticalCheck():
 		player = 0
 
 		# count which row is active
-		row = rowLength
+		row = (rowHeight // rowLength)
 		for startIndex in range(len(positions)):
-			if startIndex % (rowHeight // rowLength) != 0:
-				# check if the end of the row is at least 4 indexs away
-				if startIndex + 4 <= row:
-					# check if the start point is the player we are checking for
-					if positions[startIndex] == player:
-						# create a set with start index
-						indexs = set([startIndex])
-						currentIndex = startIndex
-						# check 4 indexs to the right 
-						for i in range(4):
-							# check if current index will go past the list length
-							if currentIndex + 1 <= len(positions):
-								# check if the current position is the same as player
-								if positions[currentIndex] == player:
-									# add index to the set because it is the same as the player and is adjacent to another player block
-									indexs.add(currentIndex)
-									# go to the next block
-									currentIndex += 1
-								else:
-									# encounterd a block of opposite type
-									break
+			# check if the end of the row is at least 4 indexs away
+			if startIndex + 4 <= row:
+				# check if the start point is the player we are checking for
+				if positions[startIndex] == player:
+					# create a set with start index
+					indexs = set([startIndex])
+					currentIndex = startIndex
+					# check 4 indexs to the right 
+					for i in range(4):
+						# check if current index will go past the list length
+						if currentIndex + 1 <= len(positions):
+							# check if the current position is the same as player
+							if positions[currentIndex] == player:
+								# add index to the set because it is the same as the player and is adjacent to another player block
+								indexs.add(currentIndex)
+								# go to the next block
+								currentIndex += 1
 							else:
-								# index is at the end of the list
+								# encounterd a block of opposite type
 								break
+						else:
+							# index is at the end of the list
+							break
 
-						# check for 4 in a row
-						if len(indexs) >= 4:
-							print(indexs)
-							wins += 1
-						indexs = set([startIndex])
-				# check if at the end of the row
-				if startIndex + 1 >= row:
-					row += rowLength
+					# check for 4 in a row
+					if len(indexs) >= 4:
+						print(indexs)
+						wins += 1
+					indexs = set([startIndex])
+			# check if at the end of the row
+			if startIndex + 1 >= row:
+				row += (rowHeight // rowLength)
 				
 
-	posString = ""
-	for i, pos in enumerate(allPos):
-		if i % rowLength == 0:
-			posString += "\n{}, ".format(pos)
-		else:
-			posString += "{}, ".format(pos)
-	print(posString)
-
-	print("\n")
-	for pos in yPos:
-		print(pos)
-
-	posString = ""
-	for i, pos in enumerate(positions):
-		if i % rowLength == 0:
-			posString += "\n{}, ".format(pos)
-		else:
-			if i % (rowHeight // rowLength) == 0:
+		posString = "\n"
+		for i, pos in enumerate(allPos):
+			if i % rowLength == 0:
 				posString += "\n{}, ".format(pos)
 			else:
 				posString += "{}, ".format(pos)
+		print(posString)
 
-	print(posString)
+		posString = "\n"
+		for i, pos in enumerate(positions):
+			if i % rowLength == 0:
+				posString += "\n{}, ".format(pos)
+			else:
+				if i % (rowHeight // rowLength) == 0:
+					posString += "|\n{}, ".format(pos)
+				else:
+					posString += "{}, ".format(pos)
 
-	print("\nWins: ", wins)
+		print(posString, "\n")
+
+		print("\nWins: {}\n".format(wins))
+
+		
 
 
 VerticalCheck()
-# fix vertical check - not ending at the end of a line
