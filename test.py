@@ -1,6 +1,5 @@
-# still need to add diagonal checks
-
 # test vertical checks
+# test diagonal checks
 
 import random
 
@@ -41,7 +40,7 @@ def HorizontalCheck():
 								# go to the next block
 								currentIndex += 1
 							else:
-								# encounterd a block of opposite type
+								# encountered a block of opposite type
 								break
 						else:
 							# index is at the end of the list
@@ -126,7 +125,7 @@ def VerticalCheck():
 								# go to the next block
 								currentIndex += 1
 							else:
-								# encounterd a block of opposite type
+								# encountered a block of opposite type
 								break
 						else:
 							# index is at the end of the list
@@ -212,13 +211,13 @@ def DiagonalCheck():
 				wins += 1
 
 
-			indexs = set([(x, y)])
+			indexs = set([])
 			# down - left check
-			for i in range(1, 4):
+			for i in range(4):
 				try:
-					if x - i >= 0 and y - i >= 0:
-						if positions[y - i][x - i] == player:
-							indexs.add((x - i, y - i))
+					if x - i >= 0 and y + i >= 0:
+						if positions[y + i][x - i] == player:
+							indexs.add((x - i, y + i))
 						else:
 							break
 				except:
