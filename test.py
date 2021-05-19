@@ -1,4 +1,4 @@
-# still need to add diaganol checks
+# still need to add diagonal checks
 
 # test vertical checks
 
@@ -167,4 +167,68 @@ def VerticalCheck():
 		
 
 
-VerticalCheck()
+def DiagonalCheck():
+	wins = 0
+	player = 0
+
+	rowLength = 10
+	rowHeight = 40
+	row = 0
+
+	allPos = [random.randint(0, 1) for i in range(rowHeight)]
+	# allPos = [0 for i in range(rowHeight)]
+
+	positions = [[] for i in range(len(allPos) // rowLength)]
+
+	for i, pos in enumerate(allPos):
+		if i != 0:
+			if i % rowLength == 0:
+				row += 1
+		positions[row].append(pos)
+
+	string = "\n"
+	for i, pos in enumerate(allPos):
+		if i % rowLength == 0:
+			string += "\n{}, ".format(pos)
+		else:
+			string += "{}, ".format(pos)
+	print(string, "\n")
+
+
+	for y, yList in enumerate(positions):
+		for x in range(len(yList)):
+			indexs = set([])
+			# down - right check
+			for i in range(4):
+				try:
+					if positions[y + i][x + i] == player:
+						indexs.add((x + i, y + i))
+					else:
+						break
+				except:
+					break
+			if len(indexs) >= 4:
+				print("DR:", indexs)
+				wins += 1
+
+
+			indexs = set([(x, y)])
+			# down - left check
+			for i in range(1, 4):
+				try:
+					if x - i >= 0 and y - i >= 0:
+						if positions[y - i][x - i] == player:
+							indexs.add((x - i, y - i))
+						else:
+							break
+				except:
+					break
+			if len(indexs) >= 4:
+				print("DL", indexs)
+				wins += 1
+
+
+	print(wins)
+
+
+DiagonalCheck()
